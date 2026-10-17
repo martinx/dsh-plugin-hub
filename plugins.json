@@ -83,7 +83,7 @@
     },
     {
       "name": "dsh-workspace-status",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "title": {
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
