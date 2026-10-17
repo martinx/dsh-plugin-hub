@@ -45,11 +45,11 @@
       },
       "versions": [
         {
-          "version": "0.4.0",
+          "version": "0.4.1",
           "source": {
             "type": "git",
             "url": "https://github.com/martinx/dsh-workspace-status",
-            "commit": "826fa26ee8d337f34edb6a5fb099713c1281030c"
+            "commit": "feb4904ce90fd6de429fd9bccd28fbc6f970a6df"
           },
           "engines": {
             "dsh": ">=0.2.0-rc.2"
