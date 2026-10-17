@@ -113,7 +113,7 @@
     },
     {
       "name": "dsh-usage-analytics",
-      "version": "0.2.5",
+      "version": "0.2.6",
       "title": {
         "zh": "用量与成本分析",
         "en": "Usage & Cost Analytics"
