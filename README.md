@@ -20,8 +20,14 @@ scripts/build.mjs     # generates index.html + market.json
 index.html            # generated landing page (committed, served by GitHub Pages)
 market.json           # generated DSH plugin-market index (committed)
 CNAME                 # custom domain: plugins.bitey.ai
+docs/                 # design notes (roadmap-v2, dpm-spec)
 .github/workflows/    # Pages deployment
 ```
+
+## Docs
+
+- [docs/dpm-spec.md](docs/dpm-spec.md) — `dpm` plugin manager spec (npm + GitHub install, lifecycle, market index)
+- [docs/roadmap-v2.md](docs/roadmap-v2.md) — V2 platform plan
 
 ## Add a plugin
 
