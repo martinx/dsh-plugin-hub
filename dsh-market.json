@@ -139,12 +139,12 @@
       },
       "versions": [
         {
-          "version": "0.2.1",
-          "publishTimestamp": 1792227866,
+          "version": "0.2.2",
+          "publishTimestamp": 1792227976,
           "source": {
             "type": "git",
             "url": "https://github.com/martinx/dsh-usage-analytics",
-            "commit": "400cdc9cccbd8b7636004cc9b9bf4b32b98c5c1a"
+            "commit": "a813689987347b41fa2b314205226e92b11728b7"
           },
           "engines": {
             "dsh": ">=0.2.0-rc.2"
