@@ -230,22 +230,6 @@
   .install-card p { margin: 0; color: var(--muted); font-size: 13px; }
   .market-url code { color: #b9c6ff; }
 
-  /* Roadmap */
-  .roadmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
-  .roadmap-card { padding: 28px; border-radius: var(--radius); border: 1px solid var(--border); background: #0f0f11; }
-  .roadmap-card.done { background: linear-gradient(180deg, rgba(78,209,126,.06), #0f0f11 55%); }
-  .roadmap-card.planned { background: linear-gradient(180deg, rgba(86,134,254,.08), #0f0f11 60%); }
-  .roadmap-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .phase { font-size: 12px; letter-spacing: 0.12em; color: var(--muted); }
-  .status { font-size: 11px; padding: 2px 9px; border-radius: 999px; }
-  .status.done { background: rgba(78,209,126,.14); color: var(--green); }
-  .status.planned { background: rgba(86,134,254,.14); color: var(--accent-soft); }
-  .roadmap-card h3 { margin: 0 0 8px; font-size: 20px; letter-spacing: -0.02em; }
-  .roadmap-card p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
-  .roadmap-card ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .roadmap-card li { position: relative; padding-left: 18px; color: #c3c6cd; font-size: 13px; }
-  .roadmap-card li::before { content: "›"; position: absolute; left: 4px; color: var(--accent-soft); }
-
   /* Footer */
   footer { margin-top: 100px; border-top: 1px solid var(--border); }
   .footer-inner {
@@ -283,7 +267,6 @@
     <nav class="nav-links">
       <a href="#plugins">插件</a>
       <a href="#install">安装</a>
-      <a href="#roadmap">路线图</a>
     </nav>
     <div class="nav-actions">
       <a class="btn btn-ghost" href="https://github.com/martinx/dsh-plugin-hub" target="_blank" rel="noreferrer">GitHub</a>
@@ -327,8 +310,8 @@
   </section>
 
   <section class="stats" aria-label="项目统计">
-    <div class="stat"><b>2</b><span>插件</span></div>
-    <div class="stat"><b>2</b><span>独立仓库</span></div>
+    <div class="stat"><b>3</b><span>插件</span></div>
+    <div class="stat"><b>3</b><span>独立仓库</span></div>
     <div class="stat"><b>MIT</b><span>开源协议</span></div>
     <div class="stat"><b>0</b><span>云端依赖</span></div>
   </section>
@@ -370,10 +353,10 @@ bash install.sh</code></pre>
         <article class="plugin-card reveal" style="--delay:70ms">
           <div class="plugin-top">
             <h3 class="plugin-title">工作区 Git/PR 状态</h3>
-            <span class="version">v0.4.2</span>
+            <span class="version">v0.5.0</span>
           </div>
           <p class="plugin-en">Workspace Status</p>
-          <p class="plugin-desc">输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境、账户余额，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。</p>
+          <p class="plugin-desc">输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。</p>
           <div class="plugin-meta">
             <span class="category">开发</span>
             <span class="tag">git</span><span class="tag">github</span><span class="tag">pull-request</span><span class="tag">diff</span><span class="tag">branch</span><span class="tag">status</span>
@@ -384,11 +367,36 @@ cd dsh-workspace-status
 bash install.sh</code></pre>
             <button class="copy" type="button" data-target="plugin-install-1">复制</button>
           </div>
-          <p class="plugin-note">需要 git；PR/检查需要 gh 登录；余额来自 DSH 账户接口（免费，需登录 DeepSeek 账号，否则自动隐藏）；宿主代码更新后需重启 DSH。</p>
+          <p class="plugin-note">需要 git；PR/检查需要 gh 登录；宿主代码更新后需重启 DSH。余额已剥离到 dsh-usage-analytics。</p>
           <div class="plugin-links">
             <a href="https://github.com/martinx/dsh-workspace-status" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
             <a href="https://github.com/martinx/dsh-workspace-status/blob/main/README.md" target="_blank" rel="noreferrer">README</a>
             <a href="https://github.com/martinx/dsh-workspace-status/releases" target="_blank" rel="noreferrer">版本</a>
+          </div>
+        </article>
+
+        <article class="plugin-card reveal" style="--delay:140ms">
+          <div class="plugin-top">
+            <h3 class="plugin-title">用量与成本分析</h3>
+            <span class="version">v0.2.0</span>
+          </div>
+          <p class="plugin-en">Usage &amp; Cost Analytics</p>
+          <p class="plugin-desc">基于本机 session 日志的完整用量统计：逐请求 token、官方峰谷价成本、模型/会话/工作区分析、余额与 Dashboard。</p>
+          <div class="plugin-meta">
+            <span class="category">统计</span>
+            <span class="tag">usage</span><span class="tag">tokens</span><span class="tag">cost</span><span class="tag">dashboard</span><span class="tag">sqlite</span>
+          </div>
+          <div class="code-block small">
+            <pre><code id="plugin-install-2">git clone git@github.com:martinx/dsh-usage-analytics.git
+cd dsh-usage-analytics
+bash install.sh</code></pre>
+            <button class="copy" type="button" data-target="plugin-install-2">复制</button>
+          </div>
+          <p class="plugin-note">数据全部本地 SQLite，不上传；需重启 DSH 加载。余额需登录 DeepSeek 账号，未登录时胶囊显示“用量”。</p>
+          <div class="plugin-links">
+            <a href="https://github.com/martinx/dsh-usage-analytics" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/martinx/dsh-usage-analytics/blob/main/README.md" target="_blank" rel="noreferrer">README</a>
+            <a href="https://github.com/martinx/dsh-usage-analytics/releases" target="_blank" rel="noreferrer">版本</a>
           </div>
         </article>
     </div>
@@ -419,35 +427,6 @@ bash install.sh</code></pre>
     </div>
   </section>
 
-  <section class="section" id="roadmap">
-    <div class="section-head">
-      <div>
-        <h2>路线图</h2>
-        <p class="section-lede">V1 先把自己在用的插件做扎实；V2 把这里做成 DSH 生态最专业、最全的插件平台。</p>
-      </div>
-    </div>
-    <div class="roadmap">
-        <article class="roadmap-card done reveal" style="--delay:0ms">
-          <div class="roadmap-head">
-            <span class="phase">V1</span>
-            <span class="status done">已完成</span>
-          </div>
-          <h3>自有插件</h3>
-          <p>先把自己在用的插件做扎实：可安装、可版本化、可被 DSH 插件市场发现。</p>
-          <ul><li>两个正式插件：Chat Clock、Workspace Status</li><li>每插件独立仓库 + install.sh / uninstall.sh</li><li>market.json 插件市场索引（含精确 commit）</li><li>本落地页：版本、说明、安装命令</li></ul>
-        </article>
-
-        <article class="roadmap-card planned reveal" style="--delay:80ms">
-          <div class="roadmap-head">
-            <span class="phase">V2</span>
-            <span class="status planned">规划中</span>
-          </div>
-          <h3>插件平台</h3>
-          <p>从自用插件页升级为 DSH 最专业、最大、最权威的插件平台。</p>
-          <ul><li>聚合全生态 DSH 插件：索引、搜索、标签、分类</li><li>下载量与安装统计，周榜 / 总榜 / 分类榜</li><li>评分与 Review，作者主页与认证</li><li>教程、文档、最佳实践与安全审核</li><li>公开 API：插件索引 / 统计 / 榜单</li></ul>
-        </article>
-    </div>
-  </section>
 </main>
 
 <footer>

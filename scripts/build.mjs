@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const data = JSON.parse(readFileSync(join(ROOT, 'plugins.json'), 'utf8'))
-const { site, plugins, roadmap } = data
+const { site, plugins } = data
 
 function git(repoDir, args) {
   try {
@@ -100,21 +100,6 @@ const card = (plugin, index) => {
         </article>`
 }
 
-const roadmapCard = (entry, index) => {
-  const items = entry.items.map((item) => `<li>${esc(item)}</li>`).join('')
-  const state = entry.status === 'done' ? 'done' : 'planned'
-  return `
-        <article class="roadmap-card ${state} reveal" style="--delay:${index * 80}ms">
-          <div class="roadmap-head">
-            <span class="phase">${esc(entry.phase)}</span>
-            <span class="status ${state}">${state === 'done' ? '已完成' : '规划中'}</span>
-          </div>
-          <h3>${esc(entry.title)}</h3>
-          <p>${esc(entry.description)}</p>
-          <ul>${items}</ul>
-        </article>`
-}
-
 const stats = [
   { value: String(resolved.length), label: '插件' },
   { value: String(resolved.length), label: '独立仓库' },
@@ -125,7 +110,6 @@ const stats = [
 const navLinks = [
   ['#plugins', '插件'],
   ['#install', '安装'],
-  ['#roadmap', '路线图'],
 ]
 
 const html = `<!doctype html>
@@ -360,22 +344,6 @@ const html = `<!doctype html>
   .install-card p { margin: 0; color: var(--muted); font-size: 13px; }
   .market-url code { color: #b9c6ff; }
 
-  /* Roadmap */
-  .roadmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
-  .roadmap-card { padding: 28px; border-radius: var(--radius); border: 1px solid var(--border); background: #0f0f11; }
-  .roadmap-card.done { background: linear-gradient(180deg, rgba(78,209,126,.06), #0f0f11 55%); }
-  .roadmap-card.planned { background: linear-gradient(180deg, rgba(86,134,254,.08), #0f0f11 60%); }
-  .roadmap-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .phase { font-size: 12px; letter-spacing: 0.12em; color: var(--muted); }
-  .status { font-size: 11px; padding: 2px 9px; border-radius: 999px; }
-  .status.done { background: rgba(78,209,126,.14); color: var(--green); }
-  .status.planned { background: rgba(86,134,254,.14); color: var(--accent-soft); }
-  .roadmap-card h3 { margin: 0 0 8px; font-size: 20px; letter-spacing: -0.02em; }
-  .roadmap-card p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
-  .roadmap-card ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .roadmap-card li { position: relative; padding-left: 18px; color: #c3c6cd; font-size: 13px; }
-  .roadmap-card li::before { content: "›"; position: absolute; left: 4px; color: var(--accent-soft); }
-
   /* Footer */
   footer { margin-top: 100px; border-top: 1px solid var(--border); }
   .footer-inner {
@@ -495,16 +463,6 @@ const html = `<!doctype html>
     </div>
   </section>
 
-  <section class="section" id="roadmap">
-    <div class="section-head">
-      <div>
-        <h2>路线图</h2>
-        <p class="section-lede">V1 先把自己在用的插件做扎实；V2 把这里做成 DSH 生态最专业、最全的插件平台。</p>
-      </div>
-    </div>
-    <div class="roadmap">${roadmap.map(roadmapCard).join('\n')}
-    </div>
-  </section>
 </main>
 
 <footer>

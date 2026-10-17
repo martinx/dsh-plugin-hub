@@ -37,7 +37,7 @@
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
       },
-      "description": "输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境、账户余额，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。",
+      "description": "输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。",
       "author": "Martin Xu",
       "homepage": "https://github.com/martinx/dsh-workspace-status#readme",
       "repository": {
@@ -45,11 +45,37 @@
       },
       "versions": [
         {
-          "version": "0.4.2",
+          "version": "0.5.0",
           "source": {
             "type": "git",
             "url": "https://github.com/martinx/dsh-workspace-status",
             "commit": "a6ba64b84abdc910bda020b80d52ddc69ca85309"
+          },
+          "engines": {
+            "dsh": ">=0.2.0-rc.2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "dsh-usage-analytics",
+      "title": {
+        "zh": "用量与成本分析",
+        "en": "Usage & Cost Analytics"
+      },
+      "description": "基于本机 session 日志的完整用量统计：逐请求 token、官方峰谷价成本、模型/会话/工作区分析、余额与 Dashboard。",
+      "author": "Martin Xu",
+      "homepage": "https://github.com/martinx/dsh-usage-analytics#readme",
+      "repository": {
+        "url": "https://github.com/martinx/dsh-usage-analytics"
+      },
+      "versions": [
+        {
+          "version": "0.2.0",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/martinx/dsh-usage-analytics",
+            "commit": "41ce07e4d3bcce72914d84b772e5a5d6eb4f6c49"
           },
           "engines": {
             "dsh": ">=0.2.0-rc.2"

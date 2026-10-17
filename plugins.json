@@ -83,14 +83,14 @@
     },
     {
       "name": "dsh-workspace-status",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "title": {
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
       },
       "description": {
-        "zh": "输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境、账户余额，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。",
-        "en": "Status bar under the composer: path, branch/tag, changes, environment, account balance, plus interactive branch switch, diffs, and PR/Actions checks."
+        "zh": "输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。",
+        "en": "Status bar under the composer: path, branch/tag, changes, environment, plus interactive branch switch, diffs, and PR/Actions checks."
       },
       "category": "开发",
       "tags": [
@@ -107,8 +107,37 @@
       },
       "install": "git clone git@github.com:martinx/dsh-workspace-status.git\ncd dsh-workspace-status\nbash install.sh",
       "notes": {
-        "zh": "需要 git；PR/检查需要 gh 登录；余额来自 DSH 账户接口（免费，需登录 DeepSeek 账号，否则自动隐藏）；宿主代码更新后需重启 DSH。",
-        "en": "Requires git; PR/checks need gh; balance uses DSH account API (free, requires DeepSeek sign-in, hidden otherwise); restart DSH after host updates."
+        "zh": "需要 git；PR/检查需要 gh 登录；宿主代码更新后需重启 DSH。余额已剥离到 dsh-usage-analytics。",
+        "en": "Requires git; PR/checks need gh; restart DSH after host updates. Balance moved to dsh-usage-analytics."
+      }
+    },
+    {
+      "name": "dsh-usage-analytics",
+      "version": "0.2.0",
+      "title": {
+        "zh": "用量与成本分析",
+        "en": "Usage & Cost Analytics"
+      },
+      "description": {
+        "zh": "基于本机 session 日志的完整用量统计：逐请求 token、官方峰谷价成本、模型/会话/工作区分析、余额与 Dashboard。",
+        "en": "Complete local usage analytics: per-request tokens, official peak/off-peak CNY cost, model/session/workspace breakdown, balance and dashboard."
+      },
+      "category": "统计",
+      "tags": [
+        "usage",
+        "tokens",
+        "cost",
+        "dashboard",
+        "sqlite"
+      ],
+      "repo": "https://github.com/martinx/dsh-usage-analytics",
+      "engines": {
+        "dsh": ">=0.2.0-rc.2"
+      },
+      "install": "git clone git@github.com:martinx/dsh-usage-analytics.git\ncd dsh-usage-analytics\nbash install.sh",
+      "notes": {
+        "zh": "数据全部本地 SQLite，不上传；需重启 DSH 加载。余额需登录 DeepSeek 账号，未登录时胶囊显示“用量”。",
+        "en": "All data stays in a local SQLite file; restart DSH to load. Balance needs a signed-in DeepSeek account; otherwise the pill shows “用量”."
       }
     }
   ]
