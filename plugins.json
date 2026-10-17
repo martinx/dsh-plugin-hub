@@ -1,16 +1,55 @@
 {
   "site": {
+    "brand": "BITEY",
+    "product": "DSH Plugins",
+    "domain": "plugins.bitey.ai",
     "title": {
-      "zh": "Martin 的 DSH 插件",
-      "en": "Martin's DSH Plugins"
+      "zh": "BITEY · DSH 插件",
+      "en": "BITEY · DSH Plugins"
     },
     "description": {
-      "zh": "为 DeepSeek Harness 维护的本地插件集合：版本、说明与安装方式。",
-      "en": "Local plugins for DeepSeek Harness: versions, notes and install steps."
+      "zh": "为 DeepSeek Harness 打造的高质量插件：时间戳常显、工作区 Git/PR 状态。一次安装，所有会话生效。",
+      "en": "High-quality plugins for DeepSeek Harness: always-visible timestamps and workspace git/PR status."
     },
     "author": "Martin Xu",
-    "marketUrl": "https://martinx.github.io/dsh-plugin-hub/market.json"
+    "repo": "https://github.com/martinx/dsh-plugin-hub",
+    "marketUrl": "https://plugins.bitey.ai/market.json",
+    "github": "https://github.com/martinx",
+    "announce": "PREVIEW",
+    "hero": {
+      "chip": "V1 · 本地插件",
+      "title": ["DSH 插件，", "即装即用"],
+      "sub": "为 DeepSeek Harness 打造：消息时间戳常显、输入框下方实时 Git/PR 状态。",
+      "sub2": "一次安装，所有会话生效；纯插件实现，不改 DSH 源码。"
+    }
   },
+  "roadmap": [
+    {
+      "phase": "V1",
+      "status": "done",
+      "title": "自有插件",
+      "description": "先把自己在用的插件做扎实：可安装、可版本化、可被 DSH 插件市场发现。",
+      "items": [
+        "两个正式插件：Chat Clock、Workspace Status",
+        "每插件独立仓库 + install.sh / uninstall.sh",
+        "market.json 插件市场索引（含精确 commit）",
+        "本落地页：版本、说明、安装命令"
+      ]
+    },
+    {
+      "phase": "V2",
+      "status": "planned",
+      "title": "插件平台",
+      "description": "从自用插件页升级为 DSH 最专业、最大、最权威的插件平台。",
+      "items": [
+        "聚合全生态 DSH 插件：索引、搜索、标签、分类",
+        "下载量与安装统计，周榜 / 总榜 / 分类榜",
+        "评分与 Review，作者主页与认证",
+        "教程、文档、最佳实践与安全审核",
+        "公开 API：插件索引 / 统计 / 榜单"
+      ]
+    }
+  ],
   "plugins": [
     {
       "name": "dsh-chat-clock",
@@ -47,8 +86,8 @@
         "en": "Workspace Status"
       },
       "description": {
-        "zh": "在输入框下方的 composer dock 显示当前仓库的分支、暂存/未暂存/未跟踪/冲突数量、ahead/behind，以及 GitHub PR 状态，点击可直接打开 PR。",
-        "en": "A composer-dock pill showing the current repo's branch, staged/unstaged/untracked/conflicted counts, ahead/behind, and the GitHub PR status (click to open)."
+        "zh": "在输入框下方的 composer dock 显示当前仓库的分支、变更数量、ahead/behind，以及 GitHub PR 状态，点击可直接打开 PR。",
+        "en": "A composer-dock pill showing the current repo's branch, change counts, ahead/behind, and the GitHub PR status."
       },
       "category": "开发",
       "tags": [

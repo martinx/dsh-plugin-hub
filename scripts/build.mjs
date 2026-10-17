@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const data = JSON.parse(readFileSync(join(ROOT, 'plugins.json'), 'utf8'))
-const { site, plugins } = data
+const { site, plugins, roadmap } = data
 
 function git(repoDir, args) {
   try {
@@ -22,7 +22,7 @@ function git(repoDir, args) {
   }
 }
 
-function escapeHtml(value) {
+function esc(value) {
   return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -49,7 +49,7 @@ const resolved = plugins.map((plugin) => {
 
 const market = {
   format: 1,
-  title: site.title,
+  title: { zh: site.title.zh, en: site.title.en },
   plugins: resolved.map((plugin) => ({
     name: plugin.name,
     title: plugin.title,
@@ -73,122 +73,484 @@ const market = {
 
 writeFileSync(join(ROOT, 'market.json'), `${JSON.stringify(market, null, 2)}\n`)
 
-const cards = resolved.map((plugin) => {
-  const tags = plugin.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')
+const card = (plugin, index) => {
+  const tags = plugin.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')
   return `
-      <article class="card" data-plugin="${escapeHtml(plugin.name)}">
-        <div class="card-head">
-          <h2>${escapeHtml(plugin.title.zh)}</h2>
-          <span class="version">v${escapeHtml(plugin.version)}</span>
-        </div>
-        <p class="en">${escapeHtml(plugin.title.en)}</p>
-        <p class="desc">${escapeHtml(plugin.description.zh)}</p>
-        <p class="desc en-desc">${escapeHtml(plugin.description.en)}</p>
-        <div class="meta">
-          <span class="category">${escapeHtml(plugin.category)}</span>
-          ${tags}
-        </div>
-        <pre class="install"><code>${escapeHtml(plugin.install)}</code></pre>
-        <p class="notes">${escapeHtml(plugin.notes.zh)}</p>
-        <div class="links">
-          <a href="${escapeHtml(plugin.repo)}" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="${escapeHtml(plugin.repo)}/blob/main/README.md" target="_blank" rel="noreferrer">README</a>
-          <a href="${escapeHtml(plugin.repo)}#readme" target="_blank" rel="noreferrer">安装说明</a>
-        </div>
-      </article>`
-}).join('\n')
+        <article class="plugin-card reveal" style="--delay:${index * 70}ms">
+          <div class="plugin-top">
+            <h3 class="plugin-title">${esc(plugin.title.zh)}</h3>
+            <span class="version">v${esc(plugin.version)}</span>
+          </div>
+          <p class="plugin-en">${esc(plugin.title.en)}</p>
+          <p class="plugin-desc">${esc(plugin.description.zh)}</p>
+          <div class="plugin-meta">
+            <span class="category">${esc(plugin.category)}</span>
+            ${tags}
+          </div>
+          <div class="code-block small">
+            <pre><code id="plugin-install-${index}">${esc(plugin.install)}</code></pre>
+            <button class="copy" type="button" data-target="plugin-install-${index}">复制</button>
+          </div>
+          <p class="plugin-note">${esc(plugin.notes.zh)}</p>
+          <div class="plugin-links">
+            <a href="${esc(plugin.repo)}" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="${esc(plugin.repo)}/blob/main/README.md" target="_blank" rel="noreferrer">README</a>
+            <a href="${esc(plugin.repo)}/releases" target="_blank" rel="noreferrer">版本</a>
+          </div>
+        </article>`
+}
+
+const roadmapCard = (entry, index) => {
+  const items = entry.items.map((item) => `<li>${esc(item)}</li>`).join('')
+  const state = entry.status === 'done' ? 'done' : 'planned'
+  return `
+        <article class="roadmap-card ${state} reveal" style="--delay:${index * 80}ms">
+          <div class="roadmap-head">
+            <span class="phase">${esc(entry.phase)}</span>
+            <span class="status ${state}">${state === 'done' ? '已完成' : '规划中'}</span>
+          </div>
+          <h3>${esc(entry.title)}</h3>
+          <p>${esc(entry.description)}</p>
+          <ul>${items}</ul>
+        </article>`
+}
+
+const stats = [
+  { value: String(resolved.length), label: '插件' },
+  { value: String(resolved.length), label: '独立仓库' },
+  { value: 'MIT', label: '开源协议' },
+  { value: '0', label: '云端依赖' },
+]
+
+const navLinks = [
+  ['#plugins', '插件'],
+  ['#install', '安装'],
+  ['#roadmap', '路线图'],
+]
 
 const html = `<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${escapeHtml(site.title.zh)}</title>
-<meta name="description" content="${escapeHtml(site.description.zh)}">
+<title>${esc(site.title.zh)}</title>
+<meta name="description" content="${esc(site.description.zh)}">
+<meta property="og:title" content="${esc(site.title.zh)}">
+<meta property="og:description" content="${esc(site.description.zh)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://${esc(site.domain)}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235686fe'/%3E%3Cpath d='M16 7l8 5v8l-8 5-8-5v-8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
 <style>
   :root {
-    color-scheme: light dark;
-    --bg: #f7f7f8;
-    --card: #ffffff;
-    --text: #1c1c1e;
-    --muted: #6b6b72;
-    --border: rgba(0, 0, 0, 0.09);
-    --accent: #3b6ef5;
-    --chip: rgba(59, 110, 245, 0.10);
-    --code-bg: #f2f2f4;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #111113;
-      --card: #1a1a1d;
-      --text: #f2f2f4;
-      --muted: #9a9aa2;
-      --border: rgba(255, 255, 255, 0.10);
-      --accent: #7fa0ff;
-      --chip: rgba(127, 160, 255, 0.14);
-      --code-bg: #141416;
-    }
+    color-scheme: dark;
+    --bg: #0a0a0a;
+    --surface: #111113;
+    --surface-2: #151517;
+    --border: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text: #f4f5f7;
+    --muted: #9b9da3;
+    --muted-2: #6f7178;
+    --accent: #5686fe;
+    --accent-soft: #9db4ff;
+    --green: #4ed17e;
+    --amber: #f7ad31;
+    --radius: 20px;
+    --max: 1120px;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    padding: 56px 20px 80px;
     background: var(--bg);
     color: var(--text);
-    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    font: 16px/1.65 var(--font);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-  .wrap { max-width: 1040px; margin: 0 auto; }
-  header.hero { margin-bottom: 40px; }
-  h1 { font-size: 30px; line-height: 1.25; margin: 0 0 10px; letter-spacing: -0.02em; }
-  .lede { color: var(--muted); margin: 0 0 18px; max-width: 720px; }
-  .market {
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: rgba(86, 134, 254, 0.35); }
+
+  /* Nav */
+  .nav-wrap { position: sticky; top: 16px; z-index: 50; padding: 0 20px; }
+  .nav {
+    max-width: var(--max); margin: 0 auto; height: 58px;
+    display: flex; align-items: center; gap: 20px;
+    padding: 0 10px 0 20px;
+    background: rgba(14, 14, 16, 0.72);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: 0.14em; font-size: 13px; }
+  .brand-mark { width: 10px; height: 10px; background: var(--accent); transform: rotate(45deg); border-radius: 2px; box-shadow: 0 0 18px rgba(86,134,254,.9); }
+  .brand small {
+    font-size: 9px; letter-spacing: 0.12em; padding: 3px 7px; border-radius: 4px;
+    background: #fff; color: #0a0a0a; font-weight: 700;
+  }
+  .nav-links { display: flex; gap: 22px; margin-left: 12px; }
+  .nav-links a { color: var(--muted); font-size: 14px; transition: color .18s ease; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 40px; padding: 0 18px; border-radius: 999px;
+    font-size: 14px; font-weight: 500; white-space: nowrap;
+    border: 1px solid transparent; cursor: pointer; transition: all .18s ease;
+  }
+  .btn-primary { background: #fff; color: #0a0a0a; }
+  .btn-primary:hover { background: #e8e8ea; transform: translateY(-1px); }
+  .btn-ghost { border-color: var(--border-strong); color: var(--text); background: rgba(255,255,255,.02); }
+  .btn-ghost:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.28); }
+  .btn-lg { height: 46px; padding: 0 24px; font-size: 15px; }
+
+  /* Hero */
+  .hero {
+    position: relative; text-align: center; overflow: hidden;
+    padding: 96px 20px 40px;
+    background:
+      radial-gradient(1300px 760px at 50% -20%, rgba(86, 134, 254, 0.78), transparent 62%),
+      radial-gradient(1000px 620px at 84% -8%, rgba(57, 100, 254, 0.52), transparent 60%),
+      radial-gradient(900px 560px at 10% 2%, rgba(103, 158, 254, 0.34), transparent 62%),
+      radial-gradient(900px 480px at 50% 112%, rgba(86, 134, 254, 0.20), transparent 70%),
+      #0a0a0a;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, transparent 62%, var(--bg) 100%);
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .chip {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px;
-    background: var(--card); color: var(--muted); font-size: 13px;
+    padding: 6px 14px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.04);
+    color: #cfd6ff; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
   }
-  .market code { color: var(--text); }
-  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-  .card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-    padding: 20px; display: flex; flex-direction: column; gap: 10px;
+  .chip::before { content: "✦"; color: var(--accent-soft); }
+  h1 {
+    margin: 26px auto 0; max-width: 900px;
+    font-size: clamp(44px, 6.4vw, 82px); line-height: 1.06;
+    letter-spacing: -0.045em; font-weight: 600;
   }
-  .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-  .card h2 { font-size: 18px; margin: 0; letter-spacing: -0.01em; }
+  h1 .grad {
+    background: linear-gradient(100deg, #cfe0ff 0%, #7fa0ff 45%, #5686fe 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-sub { margin: 24px auto 0; max-width: 660px; color: #b9bcc4; font-size: 17px; line-height: 1.75; }
+  .hero-sub + .hero-sub { margin-top: 8px; color: var(--muted); font-size: 15px; }
+  .cta { margin-top: 34px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* Hero preview */
+  .hero-preview { max-width: 780px; margin: 64px auto 0; position: relative; }
+  .hero-preview::before {
+    content: ""; position: absolute; inset: -40px -60px -60px;
+    background: radial-gradient(closest-side, rgba(86,134,254,.22), transparent 75%);
+    filter: blur(20px); pointer-events: none;
+  }
+  .preview-card {
+    position: relative; border: 1px solid var(--border); border-radius: 18px;
+    background: linear-gradient(180deg, #17171a, #101012);
+    box-shadow: 0 30px 80px rgba(0,0,0,.55);
+    overflow: hidden; text-align: left;
+  }
+  .preview-head {
+    display: flex; align-items: center; gap: 7px; padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.02);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #3a3a3e; }
+  .dot:nth-child(1) { background: #ff5f57; }
+  .dot:nth-child(2) { background: #febc2e; }
+  .dot:nth-child(3) { background: #28c840; }
+  .preview-title { margin-left: 10px; color: var(--muted-2); font-size: 12px; }
+  .preview-body { padding: 22px; display: flex; flex-direction: column; gap: 14px; min-height: 220px; }
+  .bubble { align-self: flex-end; max-width: 78%; padding: 10px 14px; border-radius: 14px; background: rgba(86,134,254,.16); color: #dfe7ff; font-size: 13px; }
+  .answer { color: #c9ccd3; font-size: 13.5px; line-height: 1.7; }
+  .answer .time { margin-left: 8px; color: var(--muted-2); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  .dock {
+    margin-top: auto; display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px; border-radius: 12px;
+    background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07);
+    font-size: 12px; color: var(--muted); flex-wrap: wrap;
+  }
+  .dock-pill { padding: 2px 9px; border-radius: 999px; border: 1px solid rgba(255,255,255,.1); color: #cfd2d8; white-space: nowrap; }
+  .dock-pill.branch { color: #b9c6ff; border-color: rgba(86,134,254,.4); }
+  .dock-pill.add { color: var(--green); }
+  .dock-pill.mod { color: var(--amber); }
+  .dock-pill.pr { color: #8fd0a4; border-color: rgba(78,209,126,.35); }
+  .dock-spacer { flex: 1; }
+  .dock-model { color: var(--muted-2); font-size: 11.5px; }
+
+  /* Stats */
+  .stats {
+    max-width: var(--max); margin: 26px auto 0; padding: 0 20px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+  }
+  .stat { background: #0d0d0f; padding: 22px 18px; text-align: center; }
+  .stat b { display: block; font-size: 26px; font-weight: 600; letter-spacing: -0.03em; }
+  .stat span { color: var(--muted-2); font-size: 12px; letter-spacing: 0.06em; }
+
+  /* Sections */
+  .section { max-width: var(--max); margin: 0 auto; padding: 92px 20px 0; scroll-margin-top: 96px; }
+  .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
+  h2 { margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.12; letter-spacing: -0.04em; font-weight: 600; }
+  .section-lede { margin: 12px 0 0; color: var(--muted); max-width: 620px; font-size: 15px; }
+
+  /* Plugin grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+  .plugin-card {
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 28px; border-radius: var(--radius);
+    background: linear-gradient(180deg, #151517, #0f0f10);
+    border: 1px solid var(--border);
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .plugin-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+  .plugin-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .plugin-title { margin: 0; font-size: 20px; letter-spacing: -0.02em; font-weight: 600; }
   .version {
-    font-size: 12px; color: var(--accent); background: var(--chip);
-    border-radius: 999px; padding: 1px 9px; font-variant-numeric: tabular-nums; white-space: nowrap;
+    font-size: 11.5px; padding: 2px 9px; border-radius: 999px;
+    background: rgba(86,134,254,.14); color: var(--accent-soft);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
   }
-  .en { margin: -6px 0 0; color: var(--muted); font-size: 12px; letter-spacing: 0.02em; text-transform: uppercase; }
-  .desc { margin: 0; }
-  .en-desc { color: var(--muted); font-size: 13px; }
-  .meta { display: flex; flex-wrap: wrap; gap: 6px; }
-  .category { font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--chip); color: var(--accent); }
-  .tag { font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
-  .install { margin: 4px 0 0; background: var(--code-bg); border-radius: 10px; padding: 12px; overflow-x: auto; }
-  .install code { font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; }
-  .notes { margin: 0; color: var(--muted); font-size: 12.5px; }
-  .links { display: flex; gap: 14px; margin-top: auto; padding-top: 6px; }
-  .links a { color: var(--accent); text-decoration: none; font-size: 13px; }
-  .links a:hover { text-decoration: underline; }
-  footer { margin-top: 48px; color: var(--muted); font-size: 12px; }
-  footer a { color: inherit; }
+  .plugin-en { margin: -8px 0 0; color: var(--muted-2); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .plugin-desc { margin: 0; color: #c3c6cd; font-size: 14px; line-height: 1.7; }
+  .plugin-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .category { font-size: 11.5px; padding: 2px 9px; border-radius: 999px; background: rgba(86,134,254,.14); color: var(--accent-soft); }
+  .tag { font-size: 11.5px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted-2); }
+  .plugin-note { margin: 0; color: var(--muted-2); font-size: 12px; line-height: 1.65; }
+  .plugin-links { display: flex; gap: 18px; margin-top: auto; padding-top: 6px; }
+  .plugin-links a { color: var(--accent-soft); font-size: 13px; }
+  .plugin-links a:hover { color: #fff; }
+
+  /* Code blocks */
+  .code-block { position: relative; border-radius: 14px; border: 1px solid var(--border); background: #08080a; overflow: hidden; }
+  .code-block pre { margin: 0; padding: 16px 88px 16px 16px; overflow-x: auto; }
+  .code-block code { font: 12.5px/1.65 var(--mono); color: #d6d8de; white-space: pre; }
+  .code-block.small pre { padding: 13px 76px 13px 13px; }
+  .code-block.small code { font-size: 11.5px; }
+  .copy {
+    position: absolute; top: 10px; right: 10px;
+    height: 26px; padding: 0 10px; border-radius: 8px;
+    border: 1px solid var(--border); background: rgba(255,255,255,.04);
+    color: var(--muted); font-size: 11.5px; cursor: pointer; font-family: var(--font);
+    transition: all .16s ease;
+  }
+  .copy:hover { color: var(--text); border-color: var(--border-strong); background: rgba(255,255,255,.08); }
+  .copy.done { color: var(--green); border-color: rgba(78,209,126,.4); }
+
+  /* Install */
+  .install-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 20px; align-items: start; }
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+  .step { display: flex; gap: 14px; }
+  .step-num {
+    flex: 0 0 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border-strong); color: var(--muted); font-size: 12px;
+  }
+  .step-body b { display: block; font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+  .step-body span { color: var(--muted); font-size: 13px; }
+  .install-card { padding: 24px; border-radius: var(--radius); background: linear-gradient(180deg, #151517, #0f0f10); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px; }
+  .install-card h3 { margin: 0; font-size: 15px; font-weight: 600; }
+  .install-card p { margin: 0; color: var(--muted); font-size: 13px; }
+  .market-url code { color: #b9c6ff; }
+
+  /* Roadmap */
+  .roadmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+  .roadmap-card { padding: 28px; border-radius: var(--radius); border: 1px solid var(--border); background: #0f0f11; }
+  .roadmap-card.done { background: linear-gradient(180deg, rgba(78,209,126,.06), #0f0f11 55%); }
+  .roadmap-card.planned { background: linear-gradient(180deg, rgba(86,134,254,.08), #0f0f11 60%); }
+  .roadmap-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .phase { font-size: 12px; letter-spacing: 0.12em; color: var(--muted); }
+  .status { font-size: 11px; padding: 2px 9px; border-radius: 999px; }
+  .status.done { background: rgba(78,209,126,.14); color: var(--green); }
+  .status.planned { background: rgba(86,134,254,.14); color: var(--accent-soft); }
+  .roadmap-card h3 { margin: 0 0 8px; font-size: 20px; letter-spacing: -0.02em; }
+  .roadmap-card p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
+  .roadmap-card ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .roadmap-card li { position: relative; padding-left: 18px; color: #c3c6cd; font-size: 13px; }
+  .roadmap-card li::before { content: "›"; position: absolute; left: 4px; color: var(--accent-soft); }
+
+  /* Footer */
+  footer { margin-top: 100px; border-top: 1px solid var(--border); }
+  .footer-inner {
+    max-width: var(--max); margin: 0 auto; padding: 36px 20px 60px;
+    display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+    color: var(--muted-2); font-size: 12.5px;
+  }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a:hover { color: var(--text); }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease var(--delay, 0ms), transform .6s ease var(--delay, 0ms); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+  @media (max-width: 880px) {
+    .nav-links { display: none; }
+    .install-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .hero { padding-top: 64px; }
+  }
+  @media (max-width: 520px) {
+    .nav { padding-left: 14px; gap: 10px; }
+    .brand small { display: none; }
+    .btn-ghost { display: none; }
+    .preview-body { padding: 16px; }
+  }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="hero">
-      <h1>${escapeHtml(site.title.zh)}</h1>
-      <p class="lede">${escapeHtml(site.description.zh)}</p>
-      <div class="market">在 DSH 里添加插件市场索引：<code>${escapeHtml(site.marketUrl)}</code></div>
-    </header>
-    <main class="grid">${cards}
-    </main>
-    <footer>
-      <a href="https://github.com/martinx/dsh-plugin-hub">dsh-plugin-hub</a>
-      · 生成于 ${new Date().toISOString().slice(0, 10)}
-      · 插件源码遵循各自的许可证
-    </footer>
+
+<div class="nav-wrap">
+  <header class="nav">
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span>${esc(site.brand)} <small>${esc(site.product)}</small></a>
+    <nav class="nav-links">
+      ${navLinks.map(([href, label]) => `<a href="${href}">${esc(label)}</a>`).join('\n      ')}
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-ghost" href="${esc(site.repo)}" target="_blank" rel="noreferrer">GitHub</a>
+      <a class="btn btn-primary" href="#install">添加市场</a>
+    </div>
+  </header>
+</div>
+
+<main id="top">
+  <section class="hero">
+    <div class="chip">${esc(site.hero.chip)}</div>
+    <h1>${esc(site.hero.title[0])}<br><span class="grad">${esc(site.hero.title[1])}</span></h1>
+    <p class="hero-sub">${esc(site.hero.sub)}</p>
+    <p class="hero-sub">${esc(site.hero.sub2)}</p>
+    <div class="cta">
+      <a class="btn btn-primary btn-lg" href="#install">添加插件市场</a>
+      <a class="btn btn-ghost btn-lg" href="#plugins">浏览插件</a>
+    </div>
+
+    <div class="hero-preview">
+      <div class="preview-card">
+        <div class="preview-head">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="preview-title">DeepSeek Harness · 会话</span>
+        </div>
+        <div class="preview-body">
+          <div class="bubble">这个仓库现在有什么改动？</div>
+          <div class="answer">当前分支 <b style="color:#b9c6ff">feat/hub</b>：2 个文件已暂存、1 个未暂存、3 个未跟踪，PR #128 处于 open 状态。<span class="time">09:32</span></div>
+          <div class="dock">
+            <span class="dock-pill branch">⎇ feat/hub</span>
+            <span class="dock-pill add">+2</span>
+            <span class="dock-pill mod">~1</span>
+            <span class="dock-pill">?3</span>
+            <span class="dock-pill pr">#128 open</span>
+            <span class="dock-spacer"></span>
+            <span class="dock-model">DeepSeek-V4 · High</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="项目统计">
+    ${stats.map((stat) => `<div class="stat"><b>${esc(stat.value)}</b><span>${esc(stat.label)}</span></div>`).join('\n    ')}
+  </section>
+
+  <section class="section" id="plugins">
+    <div class="section-head">
+      <div>
+        <h2>插件</h2>
+        <p class="section-lede">每个插件独立仓库、独立版本，安装脚本幂等；market.json 记录精确 commit，可复现。</p>
+      </div>
+      <a class="btn btn-ghost" href="${esc(site.repo)}" target="_blank" rel="noreferrer">查看全部仓库 ↗</a>
+    </div>
+    <div class="grid">${resolved.map(card).join('\n')}
+    </div>
+  </section>
+
+  <section class="section" id="install">
+    <div class="section-head">
+      <div>
+        <h2>在 DSH 里添加市场</h2>
+        <p class="section-lede">添加索引源后，插件页的 Discover 会列出全部插件与版本，可直接安装。</p>
+      </div>
+    </div>
+    <div class="install-grid">
+      <div class="steps">
+        <div class="step"><span class="step-num">1</span><div class="step-body"><b>打开插件页</b><span>DSH → 插件 → 更多 → 实验性插件</span></div></div>
+        <div class="step"><span class="step-num">2</span><div class="step-body"><b>打开自定义插件市场</b><span>开启「Custom plugin markets」</span></div></div>
+        <div class="step"><span class="step-num">3</span><div class="step-body"><b>添加索引源</b><span>粘贴右侧地址，确认后进入 Discover</span></div></div>
+      </div>
+      <div class="install-card">
+        <h3>插件市场索引</h3>
+        <p>把这个地址加到 DSH 的插件市场索引源：</p>
+        <div class="code-block market-url">
+          <pre><code id="market-url">${esc(site.marketUrl)}</code></pre>
+          <button class="copy" type="button" data-target="market-url">复制</button>
+        </div>
+        <p>或者直接克隆仓库，手动运行 <code style="font-family:var(--mono);color:#c9ccd3">install.sh</code> 安装单个插件。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="roadmap">
+    <div class="section-head">
+      <div>
+        <h2>路线图</h2>
+        <p class="section-lede">V1 先把自己在用的插件做扎实；V2 把这里做成 DSH 生态最专业、最全的插件平台。</p>
+      </div>
+    </div>
+    <div class="roadmap">${roadmap.map(roadmapCard).join('\n')}
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>© ${new Date().getFullYear()} ${esc(site.author)} · ${esc(site.domain)}</span>
+    <div class="footer-links">
+      <a href="${esc(site.repo)}" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="${esc(site.repo)}#readme" target="_blank" rel="noreferrer">文档</a>
+      <a href="${esc(site.marketUrl)}" target="_blank" rel="noreferrer">market.json</a>
+      <a href="https://www.deepseek.com/harness/" target="_blank" rel="noreferrer">DeepSeek Harness</a>
+    </div>
   </div>
+</footer>
+
+<script>
+  document.querySelectorAll('button.copy').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var target = document.getElementById(button.getAttribute('data-target'));
+      if (!target) return;
+      var text = target.textContent;
+      var done = function () {
+        button.textContent = '已复制';
+        button.classList.add('done');
+        window.setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('done');
+        }, 1400);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {});
+      } else {
+        done();
+      }
+    });
+  });
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  document.querySelectorAll('.reveal').forEach(function (node) { observer.observe(node); });
+</script>
 </body>
 </html>
 `
