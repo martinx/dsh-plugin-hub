@@ -4,6 +4,28 @@
     "zh": "BITEY · DSH 插件",
     "en": "BITEY · DSH Plugins"
   },
+  "description": {
+    "zh": "为 DeepSeek Harness 打造的高质量插件：时间戳常显、工作区 Git/PR 状态。一次安装，所有会话生效。",
+    "en": "High-quality plugins for DeepSeek Harness: always-visible timestamps and workspace git/PR status."
+  },
+  "metadata": {
+    "categories": {
+      "ui": {
+        "title": {
+          "zh": "界面",
+          "en": "UI"
+        }
+      },
+      "analytics": {
+        "title": {
+          "zh": "统计",
+          "en": "Analytics"
+        }
+      }
+    },
+    "labels": {},
+    "sortKeys": {}
+  },
   "plugins": [
     {
       "name": "dsh-chat-clock",
@@ -11,15 +33,29 @@
         "zh": "消息时间戳常显",
         "en": "Chat Clock"
       },
-      "description": "让 DSH 聊天里的消息时间戳不再依赖鼠标悬停，旧消息也能一眼看到发送时间。",
+      "description": {
+        "zh": "让 DSH 聊天里的消息时间戳不再依赖鼠标悬停，旧消息也能一眼看到发送时间。",
+        "en": "Keep message timestamps always visible in the DSH chat, including older messages."
+      },
       "author": "Martin Xu",
       "homepage": "https://github.com/martinx/dsh-chat-clock#readme",
       "repository": {
         "url": "https://github.com/martinx/dsh-chat-clock"
       },
+      "metadata": {
+        "category": "ui",
+        "keywords": [
+          "timestamp",
+          "chat",
+          "ui"
+        ],
+        "labels": [],
+        "sortKeys": {}
+      },
       "versions": [
         {
           "version": "0.1.0",
+          "publishTimestamp": 1792213182,
           "source": {
             "type": "git",
             "url": "https://github.com/martinx/dsh-chat-clock",
@@ -37,19 +73,36 @@
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
       },
-      "description": "输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。",
+      "description": {
+        "zh": "输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。",
+        "en": "Status bar under the composer: path, branch/tag, changes, environment, plus interactive branch switch, diffs, and PR/Actions checks."
+      },
       "author": "Martin Xu",
       "homepage": "https://github.com/martinx/dsh-workspace-status#readme",
       "repository": {
         "url": "https://github.com/martinx/dsh-workspace-status"
       },
+      "metadata": {
+        "category": "ui",
+        "keywords": [
+          "git",
+          "github",
+          "pull-request",
+          "diff",
+          "branch",
+          "status"
+        ],
+        "labels": [],
+        "sortKeys": {}
+      },
       "versions": [
         {
           "version": "0.5.0",
+          "publishTimestamp": 1792227618,
           "source": {
             "type": "git",
             "url": "https://github.com/martinx/dsh-workspace-status",
-            "commit": "a6ba64b84abdc910bda020b80d52ddc69ca85309"
+            "commit": "aaabc8450e9dcc7dbedda99b365b482a7ad07925"
           },
           "engines": {
             "dsh": ">=0.2.0-rc.2"
@@ -63,19 +116,35 @@
         "zh": "用量与成本分析",
         "en": "Usage & Cost Analytics"
       },
-      "description": "基于本机 session 日志的完整用量统计：逐请求 token、官方峰谷价成本、模型/会话/工作区分析、余额与 Dashboard。",
+      "description": {
+        "zh": "基于本机 session 日志的完整用量统计：逐请求 token、官方峰谷价成本、模型/会话/工作区分析、余额与 Dashboard。",
+        "en": "Complete local usage analytics: per-request tokens, official peak/off-peak CNY cost, model/session/workspace breakdown, balance and dashboard."
+      },
       "author": "Martin Xu",
       "homepage": "https://github.com/martinx/dsh-usage-analytics#readme",
       "repository": {
         "url": "https://github.com/martinx/dsh-usage-analytics"
       },
+      "metadata": {
+        "category": "analytics",
+        "keywords": [
+          "usage",
+          "tokens",
+          "cost",
+          "dashboard",
+          "sqlite"
+        ],
+        "labels": [],
+        "sortKeys": {}
+      },
       "versions": [
         {
           "version": "0.2.0",
+          "publishTimestamp": 1792227613,
           "source": {
             "type": "git",
             "url": "https://github.com/martinx/dsh-usage-analytics",
-            "commit": "41ce07e4d3bcce72914d84b772e5a5d6eb4f6c49"
+            "commit": "2e0c0848ce0f378177388d585217ab8e537d040a"
           },
           "engines": {
             "dsh": ">=0.2.0-rc.2"

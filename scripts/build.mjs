@@ -35,6 +35,7 @@ const resolved = plugins.map((plugin) => {
   const checkout = existsSync(dir)
   let version = plugin.version
   let commit = plugin.commit ?? null
+  let commitTime = null
   if (checkout) {
     try {
       const manifest = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'))
@@ -43,35 +44,61 @@ const resolved = plugins.map((plugin) => {
       // Keep the recorded version when the sibling checkout is not readable.
     }
     commit = git(dir, ['rev-parse', 'HEAD']) ?? commit
+    commitTime = Number(git(dir, ['show', '-s', '--format=%ct', 'HEAD']) ?? 0) || null
   }
-  return { ...plugin, version, commit, checkout }
+  return { ...plugin, version, commit, commitTime, checkout }
 })
+
+const CATEGORY_IDS = { 界面: 'ui', 统计: 'analytics', 效率: 'productivity' }
+const CATEGORY_TITLES = {
+  ui: { zh: '界面', en: 'UI' },
+  analytics: { zh: '统计', en: 'Analytics' },
+  productivity: { zh: '效率', en: 'Productivity' },
+}
+const categories = {}
+for (const plugin of resolved) {
+  const id = CATEGORY_IDS[plugin.category] ?? 'ui'
+  categories[id] = { title: CATEGORY_TITLES[id] ?? { zh: plugin.category, en: plugin.category } }
+}
 
 const market = {
   format: 1,
   title: { zh: site.title.zh, en: site.title.en },
-  plugins: resolved.map((plugin) => ({
-    name: plugin.name,
-    title: plugin.title,
-    description: plugin.description.zh,
-    author: site.author,
-    homepage: `${plugin.repo}#readme`,
-    repository: { url: plugin.repo },
-    versions: [
-      {
-        version: plugin.version,
-        source: {
-          type: 'git',
-          url: plugin.repo,
-          ...(plugin.commit === null ? {} : { commit: plugin.commit }),
-        },
-        engines: plugin.engines,
+  description: { zh: site.description.zh, en: site.description.en },
+  metadata: { categories, labels: {}, sortKeys: {} },
+  plugins: resolved.map((plugin) => {
+    const id = CATEGORY_IDS[plugin.category] ?? 'ui'
+    return {
+      name: plugin.name,
+      title: plugin.title,
+      description: { zh: plugin.description.zh, en: plugin.description.en },
+      author: site.author,
+      homepage: `${plugin.repo}#readme`,
+      repository: { url: plugin.repo },
+      metadata: {
+        category: id,
+        keywords: Array.isArray(plugin.tags) ? plugin.tags : [],
+        labels: [],
+        sortKeys: {},
       },
-    ],
-  })),
+      versions: [
+        {
+          version: plugin.version,
+          publishTimestamp: plugin.commitTime ?? Math.floor(Date.now() / 1000),
+          source: {
+            type: 'git',
+            url: plugin.repo,
+            ...(plugin.commit === null ? {} : { commit: plugin.commit }),
+          },
+          engines: plugin.engines ?? {},
+        },
+      ],
+    }
+  }),
 }
 
 writeFileSync(join(ROOT, 'market.json'), `${JSON.stringify(market, null, 2)}\n`)
+writeFileSync(join(ROOT, 'dsh-market.json'), `${JSON.stringify(market, null, 2)}\n`)
 
 const card = (plugin, index) => {
   const tags = plugin.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')
@@ -514,7 +541,7 @@ const html = `<!doctype html>
 `
 
 writeFileSync(join(ROOT, 'index.html'), html)
-console.log(`built ${resolved.length} plugin(s): index.html, market.json`)
+console.log(`built ${resolved.length} plugin(s): index.html, market.json, dsh-market.json`)
 for (const plugin of resolved) {
   console.log(`  ${plugin.name}@${plugin.version}${plugin.checkout ? '' : ' (no sibling checkout)'}`)
 }
