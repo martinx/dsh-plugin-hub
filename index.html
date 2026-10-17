@@ -370,13 +370,13 @@ bash install.sh</code></pre>
         <article class="plugin-card reveal" style="--delay:70ms">
           <div class="plugin-top">
             <h3 class="plugin-title">工作区 Git/PR 状态</h3>
-            <span class="version">v0.1.1</span>
+            <span class="version">v0.2.0</span>
           </div>
           <p class="plugin-en">Workspace Status</p>
-          <p class="plugin-desc">在输入框下方的 composer dock 显示当前仓库的分支、变更数量、ahead/behind，以及 GitHub PR 状态，点击可直接打开 PR。</p>
+          <p class="plugin-desc">输入框下方的 Git/PR 胶囊：点分支可切换，点变更看文件列表与 diff，点 PR 看详情、评审/合并状态和 GitHub Actions 检查结果。</p>
           <div class="plugin-meta">
             <span class="category">开发</span>
-            <span class="tag">git</span><span class="tag">github</span><span class="tag">pull-request</span><span class="tag">status</span>
+            <span class="tag">git</span><span class="tag">github</span><span class="tag">pull-request</span><span class="tag">diff</span><span class="tag">branch</span><span class="tag">status</span>
           </div>
           <div class="code-block small">
             <pre><code id="plugin-install-1">git clone git@github.com:martinx/dsh-workspace-status.git
@@ -384,7 +384,7 @@ cd dsh-workspace-status
 bash install.sh</code></pre>
             <button class="copy" type="button" data-target="plugin-install-1">复制</button>
           </div>
-          <p class="plugin-note">需要本机有 git；PR 状态需要 gh 已登录；非 git 目录自动隐藏；15 秒轮询。</p>
+          <p class="plugin-note">需要 git；PR/检查状态需要 gh 已登录；宿主代码更新后需重启 DSH；切换分支在脏工作区可能失败。</p>
           <div class="plugin-links">
             <a href="https://github.com/martinx/dsh-workspace-status" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
             <a href="https://github.com/martinx/dsh-workspace-status/blob/main/README.md" target="_blank" rel="noreferrer">README</a>

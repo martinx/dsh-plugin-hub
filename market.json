@@ -37,7 +37,7 @@
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
       },
-      "description": "在输入框下方的 composer dock 显示当前仓库的分支、变更数量、ahead/behind，以及 GitHub PR 状态，点击可直接打开 PR。",
+      "description": "输入框下方的 Git/PR 胶囊：点分支可切换，点变更看文件列表与 diff，点 PR 看详情、评审/合并状态和 GitHub Actions 检查结果。",
       "author": "Martin Xu",
       "homepage": "https://github.com/martinx/dsh-workspace-status#readme",
       "repository": {
@@ -45,7 +45,7 @@
       },
       "versions": [
         {
-          "version": "0.1.1",
+          "version": "0.2.0",
           "source": {
             "type": "git",
             "url": "https://github.com/martinx/dsh-workspace-status",

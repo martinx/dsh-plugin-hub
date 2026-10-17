@@ -18,7 +18,10 @@
     "announce": "PREVIEW",
     "hero": {
       "chip": "V1 · 本地插件",
-      "title": ["DSH 插件，", "即装即用"],
+      "title": [
+        "DSH 插件，",
+        "即装即用"
+      ],
       "sub": "为 DeepSeek Harness 打造：消息时间戳常显、输入框下方实时 Git/PR 状态。",
       "sub2": "一次安装，所有会话生效；纯插件实现，不改 DSH 源码。"
     }
@@ -80,20 +83,22 @@
     },
     {
       "name": "dsh-workspace-status",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "title": {
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
       },
       "description": {
-        "zh": "在输入框下方的 composer dock 显示当前仓库的分支、变更数量、ahead/behind，以及 GitHub PR 状态，点击可直接打开 PR。",
-        "en": "A composer-dock pill showing the current repo's branch, change counts, ahead/behind, and the GitHub PR status."
+        "zh": "输入框下方的 Git/PR 胶囊：点分支可切换，点变更看文件列表与 diff，点 PR 看详情、评审/合并状态和 GitHub Actions 检查结果。",
+        "en": "A composer-dock pill for branch switching, changed-file diffs, and GitHub PR/Actions status."
       },
       "category": "开发",
       "tags": [
         "git",
         "github",
         "pull-request",
+        "diff",
+        "branch",
         "status"
       ],
       "repo": "https://github.com/martinx/dsh-workspace-status",
@@ -102,8 +107,8 @@
       },
       "install": "git clone git@github.com:martinx/dsh-workspace-status.git\ncd dsh-workspace-status\nbash install.sh",
       "notes": {
-        "zh": "需要本机有 git；PR 状态需要 gh 已登录；非 git 目录自动隐藏；15 秒轮询。",
-        "en": "Requires git; PR status requires an authenticated gh; hidden outside git repos; polls every 15s."
+        "zh": "需要 git；PR/检查状态需要 gh 已登录；宿主代码更新后需重启 DSH；切换分支在脏工作区可能失败。",
+        "en": "Requires git; PR/checks need authenticated gh; restart DSH after host updates; switching may fail on a dirty tree."
       }
     }
   ]
