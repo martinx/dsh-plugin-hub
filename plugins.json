@@ -83,14 +83,14 @@
     },
     {
       "name": "dsh-workspace-status",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "title": {
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
       },
       "description": {
-        "zh": "位于左下角的 Git/PR 状态胶囊：显示路径、分支/tag、变更数、项目环境（node/pnpm/python 等），点分支可切换、点变更看 diff、点 PR 看 Actions 检查状态。",
-        "en": "Bottom-left workspace status pill: path, branch/tag, changes, detected project environment, plus interactive branch switching, file diffs, and PR/Actions checks."
+        "zh": "输入框下方 dock 行首的状态栏：显示路径、分支/tag、变更、项目环境；GitHub 分支可创建/查看 PR 与 Actions 检查。没有的条目自动隐藏，非 git 目录也显示路径与环境。",
+        "en": "Status bar under the composer: path, branch/tag, changes, detected environment, and GitHub PR/Actions. Empty items are hidden; non-git directories still show path and environment."
       },
       "category": "开发",
       "tags": [
