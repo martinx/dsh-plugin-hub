@@ -83,14 +83,14 @@
     },
     {
       "name": "dsh-workspace-status",
-      "version": "0.3.2",
+      "version": "0.4.0",
       "title": {
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
       },
       "description": {
-        "zh": "输入框下方 dock 行首的状态栏：显示路径、分支/tag、变更、项目环境；GitHub 分支可创建/查看 PR 与 Actions 检查。没有的条目自动隐藏，非 git 目录也显示路径与环境。",
-        "en": "Status bar under the composer: path, branch/tag, changes, detected environment, and GitHub PR/Actions. Empty items are hidden; non-git directories still show path and environment."
+        "zh": "输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境、账户余额，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。",
+        "en": "Status bar under the composer: path, branch/tag, changes, environment, account balance, plus interactive branch switch, diffs, and PR/Actions checks."
       },
       "category": "开发",
       "tags": [
@@ -107,8 +107,8 @@
       },
       "install": "git clone git@github.com:martinx/dsh-workspace-status.git\ncd dsh-workspace-status\nbash install.sh",
       "notes": {
-        "zh": "需要 git；PR/检查状态需要 gh 已登录；宿主代码更新后需重启 DSH；切换分支在脏工作区可能失败。",
-        "en": "Requires git; PR/checks need authenticated gh; restart DSH after host updates; switching may fail on a dirty tree."
+        "zh": "需要 git；PR/检查需要 gh 登录；余额来自 DSH 账户接口（免费，需登录 DeepSeek 账号，否则自动隐藏）；宿主代码更新后需重启 DSH。",
+        "en": "Requires git; PR/checks need gh; balance uses DSH account API (free, requires DeepSeek sign-in, hidden otherwise); restart DSH after host updates."
       }
     }
   ]

@@ -370,10 +370,10 @@ bash install.sh</code></pre>
         <article class="plugin-card reveal" style="--delay:70ms">
           <div class="plugin-top">
             <h3 class="plugin-title">工作区 Git/PR 状态</h3>
-            <span class="version">v0.3.2</span>
+            <span class="version">v0.4.0</span>
           </div>
           <p class="plugin-en">Workspace Status</p>
-          <p class="plugin-desc">输入框下方 dock 行首的状态栏：显示路径、分支/tag、变更、项目环境；GitHub 分支可创建/查看 PR 与 Actions 检查。没有的条目自动隐藏，非 git 目录也显示路径与环境。</p>
+          <p class="plugin-desc">输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境、账户余额，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。</p>
           <div class="plugin-meta">
             <span class="category">开发</span>
             <span class="tag">git</span><span class="tag">github</span><span class="tag">pull-request</span><span class="tag">diff</span><span class="tag">branch</span><span class="tag">status</span>
@@ -384,7 +384,7 @@ cd dsh-workspace-status
 bash install.sh</code></pre>
             <button class="copy" type="button" data-target="plugin-install-1">复制</button>
           </div>
-          <p class="plugin-note">需要 git；PR/检查状态需要 gh 已登录；宿主代码更新后需重启 DSH；切换分支在脏工作区可能失败。</p>
+          <p class="plugin-note">需要 git；PR/检查需要 gh 登录；余额来自 DSH 账户接口（免费，需登录 DeepSeek 账号，否则自动隐藏）；宿主代码更新后需重启 DSH。</p>
           <div class="plugin-links">
             <a href="https://github.com/martinx/dsh-workspace-status" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
             <a href="https://github.com/martinx/dsh-workspace-status/blob/main/README.md" target="_blank" rel="noreferrer">README</a>

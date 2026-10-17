@@ -37,7 +37,7 @@
         "zh": "工作区 Git/PR 状态",
         "en": "Workspace Status"
       },
-      "description": "输入框下方 dock 行首的状态栏：显示路径、分支/tag、变更、项目环境；GitHub 分支可创建/查看 PR 与 Actions 检查。没有的条目自动隐藏，非 git 目录也显示路径与环境。",
+      "description": "输入框下方 dock 行首的状态栏：路径、分支/tag、变更、项目环境、账户余额，以及可交互的分支切换 / diff / PR 与 Actions 检查面板。",
       "author": "Martin Xu",
       "homepage": "https://github.com/martinx/dsh-workspace-status#readme",
       "repository": {
@@ -45,11 +45,11 @@
       },
       "versions": [
         {
-          "version": "0.3.2",
+          "version": "0.4.0",
           "source": {
             "type": "git",
             "url": "https://github.com/martinx/dsh-workspace-status",
-            "commit": "f7a4f3cd086251c883ecf1c96787705c19088820"
+            "commit": "826fa26ee8d337f34edb6a5fb099713c1281030c"
           },
           "engines": {
             "dsh": ">=0.2.0-rc.2"
