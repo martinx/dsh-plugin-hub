@@ -1,0 +1,71 @@
+{
+  "site": {
+    "title": {
+      "zh": "Martin 的 DSH 插件",
+      "en": "Martin's DSH Plugins"
+    },
+    "description": {
+      "zh": "为 DeepSeek Harness 维护的本地插件集合：版本、说明与安装方式。",
+      "en": "Local plugins for DeepSeek Harness: versions, notes and install steps."
+    },
+    "author": "Martin Xu",
+    "marketUrl": "https://martinx.github.io/dsh-plugin-hub/market.json"
+  },
+  "plugins": [
+    {
+      "name": "dsh-chat-clock",
+      "version": "0.1.0",
+      "title": {
+        "zh": "消息时间戳常显",
+        "en": "Chat Clock"
+      },
+      "description": {
+        "zh": "让 DSH 聊天里的消息时间戳不再依赖鼠标悬停，旧消息也能一眼看到发送时间。",
+        "en": "Keep message timestamps always visible in the DSH chat, including older messages."
+      },
+      "category": "界面",
+      "tags": [
+        "timestamp",
+        "chat",
+        "ui"
+      ],
+      "repo": "https://github.com/martinx/dsh-chat-clock",
+      "engines": {
+        "dsh": ">=0.2.0-rc.2"
+      },
+      "install": "git clone git@github.com:martinx/dsh-chat-clock.git\ncd dsh-chat-clock\nbash install.sh",
+      "notes": {
+        "zh": "纯样式型客户端插件，不改 DSH 源码；每个思考/工具调用的独立时间仍需核心改动。",
+        "en": "Style-only client plugin, no DSH core changes; per-step timestamps still need a core change."
+      }
+    },
+    {
+      "name": "dsh-workspace-status",
+      "version": "0.1.1",
+      "title": {
+        "zh": "工作区 Git/PR 状态",
+        "en": "Workspace Status"
+      },
+      "description": {
+        "zh": "在输入框下方的 composer dock 显示当前仓库的分支、暂存/未暂存/未跟踪/冲突数量、ahead/behind，以及 GitHub PR 状态，点击可直接打开 PR。",
+        "en": "A composer-dock pill showing the current repo's branch, staged/unstaged/untracked/conflicted counts, ahead/behind, and the GitHub PR status (click to open)."
+      },
+      "category": "开发",
+      "tags": [
+        "git",
+        "github",
+        "pull-request",
+        "status"
+      ],
+      "repo": "https://github.com/martinx/dsh-workspace-status",
+      "engines": {
+        "dsh": ">=0.2.0-rc.2"
+      },
+      "install": "git clone git@github.com:martinx/dsh-workspace-status.git\ncd dsh-workspace-status\nbash install.sh",
+      "notes": {
+        "zh": "需要本机有 git；PR 状态需要 gh 已登录；非 git 目录自动隐藏；15 秒轮询。",
+        "en": "Requires git; PR status requires an authenticated gh; hidden outside git repos; polls every 15s."
+      }
+    }
+  ]
+}

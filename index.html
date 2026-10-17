@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Martin 的 DSH 插件</title>
+<meta name="description" content="为 DeepSeek Harness 维护的本地插件集合：版本、说明与安装方式。">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7f8;
+    --card: #ffffff;
+    --text: #1c1c1e;
+    --muted: #6b6b72;
+    --border: rgba(0, 0, 0, 0.09);
+    --accent: #3b6ef5;
+    --chip: rgba(59, 110, 245, 0.10);
+    --code-bg: #f2f2f4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111113;
+      --card: #1a1a1d;
+      --text: #f2f2f4;
+      --muted: #9a9aa2;
+      --border: rgba(255, 255, 255, 0.10);
+      --accent: #7fa0ff;
+      --chip: rgba(127, 160, 255, 0.14);
+      --code-bg: #141416;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 56px 20px 80px;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  header.hero { margin-bottom: 40px; }
+  h1 { font-size: 30px; line-height: 1.25; margin: 0 0 10px; letter-spacing: -0.02em; }
+  .lede { color: var(--muted); margin: 0 0 18px; max-width: 720px; }
+  .market {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px;
+    background: var(--card); color: var(--muted); font-size: 13px;
+  }
+  .market code { color: var(--text); }
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 20px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .card h2 { font-size: 18px; margin: 0; letter-spacing: -0.01em; }
+  .version {
+    font-size: 12px; color: var(--accent); background: var(--chip);
+    border-radius: 999px; padding: 1px 9px; font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .en { margin: -6px 0 0; color: var(--muted); font-size: 12px; letter-spacing: 0.02em; text-transform: uppercase; }
+  .desc { margin: 0; }
+  .en-desc { color: var(--muted); font-size: 13px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .category { font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--chip); color: var(--accent); }
+  .tag { font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .install { margin: 4px 0 0; background: var(--code-bg); border-radius: 10px; padding: 12px; overflow-x: auto; }
+  .install code { font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; }
+  .notes { margin: 0; color: var(--muted); font-size: 12.5px; }
+  .links { display: flex; gap: 14px; margin-top: auto; padding-top: 6px; }
+  .links a { color: var(--accent); text-decoration: none; font-size: 13px; }
+  .links a:hover { text-decoration: underline; }
+  footer { margin-top: 48px; color: var(--muted); font-size: 12px; }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1>Martin 的 DSH 插件</h1>
+      <p class="lede">为 DeepSeek Harness 维护的本地插件集合：版本、说明与安装方式。</p>
+      <div class="market">在 DSH 里添加插件市场索引：<code>https://martinx.github.io/dsh-plugin-hub/market.json</code></div>
+    </header>
+    <main class="grid">
+      <article class="card" data-plugin="dsh-chat-clock">
+        <div class="card-head">
+          <h2>消息时间戳常显</h2>
+          <span class="version">v0.1.0</span>
+        </div>
+        <p class="en">Chat Clock</p>
+        <p class="desc">让 DSH 聊天里的消息时间戳不再依赖鼠标悬停，旧消息也能一眼看到发送时间。</p>
+        <p class="desc en-desc">Keep message timestamps always visible in the DSH chat, including older messages.</p>
+        <div class="meta">
+          <span class="category">界面</span>
+          <span class="tag">timestamp</span><span class="tag">chat</span><span class="tag">ui</span>
+        </div>
+        <pre class="install"><code>git clone git@github.com:martinx/dsh-chat-clock.git
+cd dsh-chat-clock
+bash install.sh</code></pre>
+        <p class="notes">纯样式型客户端插件，不改 DSH 源码；每个思考/工具调用的独立时间仍需核心改动。</p>
+        <div class="links">
+          <a href="https://github.com/martinx/dsh-chat-clock" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://github.com/martinx/dsh-chat-clock/blob/main/README.md" target="_blank" rel="noreferrer">README</a>
+          <a href="https://github.com/martinx/dsh-chat-clock#readme" target="_blank" rel="noreferrer">安装说明</a>
+        </div>
+      </article>
+
+      <article class="card" data-plugin="dsh-workspace-status">
+        <div class="card-head">
+          <h2>工作区 Git/PR 状态</h2>
+          <span class="version">v0.1.1</span>
+        </div>
+        <p class="en">Workspace Status</p>
+        <p class="desc">在输入框下方的 composer dock 显示当前仓库的分支、暂存/未暂存/未跟踪/冲突数量、ahead/behind，以及 GitHub PR 状态，点击可直接打开 PR。</p>
+        <p class="desc en-desc">A composer-dock pill showing the current repo's branch, staged/unstaged/untracked/conflicted counts, ahead/behind, and the GitHub PR status (click to open).</p>
+        <div class="meta">
+          <span class="category">开发</span>
+          <span class="tag">git</span><span class="tag">github</span><span class="tag">pull-request</span><span class="tag">status</span>
+        </div>
+        <pre class="install"><code>git clone git@github.com:martinx/dsh-workspace-status.git
+cd dsh-workspace-status
+bash install.sh</code></pre>
+        <p class="notes">需要本机有 git；PR 状态需要 gh 已登录；非 git 目录自动隐藏；15 秒轮询。</p>
+        <div class="links">
+          <a href="https://github.com/martinx/dsh-workspace-status" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://github.com/martinx/dsh-workspace-status/blob/main/README.md" target="_blank" rel="noreferrer">README</a>
+          <a href="https://github.com/martinx/dsh-workspace-status#readme" target="_blank" rel="noreferrer">安装说明</a>
+        </div>
+      </article>
+    </main>
+    <footer>
+      <a href="https://github.com/martinx/dsh-plugin-hub">dsh-plugin-hub</a>
+      · 生成于 2026-10-17
+      · 插件源码遵循各自的许可证
+    </footer>
+  </div>
+</body>
+</html>

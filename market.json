@@ -1,0 +1,61 @@
+{
+  "format": 1,
+  "title": {
+    "zh": "Martin 的 DSH 插件",
+    "en": "Martin's DSH Plugins"
+  },
+  "plugins": [
+    {
+      "name": "dsh-chat-clock",
+      "title": {
+        "zh": "消息时间戳常显",
+        "en": "Chat Clock"
+      },
+      "description": "让 DSH 聊天里的消息时间戳不再依赖鼠标悬停，旧消息也能一眼看到发送时间。",
+      "author": "Martin Xu",
+      "homepage": "https://github.com/martinx/dsh-chat-clock#readme",
+      "repository": {
+        "url": "https://github.com/martinx/dsh-chat-clock"
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/martinx/dsh-chat-clock",
+            "commit": "2fd5ea21630e160150bad323ce6e815a0b94ac80"
+          },
+          "engines": {
+            "dsh": ">=0.2.0-rc.2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "dsh-workspace-status",
+      "title": {
+        "zh": "工作区 Git/PR 状态",
+        "en": "Workspace Status"
+      },
+      "description": "在输入框下方的 composer dock 显示当前仓库的分支、暂存/未暂存/未跟踪/冲突数量、ahead/behind，以及 GitHub PR 状态，点击可直接打开 PR。",
+      "author": "Martin Xu",
+      "homepage": "https://github.com/martinx/dsh-workspace-status#readme",
+      "repository": {
+        "url": "https://github.com/martinx/dsh-workspace-status"
+      },
+      "versions": [
+        {
+          "version": "0.1.1",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/martinx/dsh-workspace-status",
+            "commit": "17c58d36314c72058d3331e9f6341c87dfc03dd4"
+          },
+          "engines": {
+            "dsh": ">=0.2.0-rc.2"
+          }
+        }
+      ]
+    }
+  ]
+}
